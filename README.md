@@ -239,3 +239,29 @@ eg. `terraform apply -destroy -auto-approve`
 ### Terraform Directory
 
 The `.terraform` directory contains binaries of the Terraform providers.
+
+
+### Issues with Terraform Cloud and Gitpod Workspace
+
+When attempting to run `terraform login`, it will launch in the Gitpod Bash terminal a Lynx text Web browser view to generate an API token.  However, it doesn't work as expected in Gitpod VSCODE in the brower.  In Lynx, press the P key to print a related token URL.  Copy the link.  Open this link in a new Google Chrome browser tab.  Generate the API token set for an expiration date of a day.  Back in the Gitpod terminal, quit out of the `terraform login` screen.  Rerun this command and paste the API token when prompted to.  Run `terraform init`.  At this point, Terraform Cloud will ask if you want to migrate your Terraform state.  Answer 'yes' to this question.
+
+This is the URL needed to generate a Terraform API login token:
+
+```
+https://app.terraform.io/app/settings/tokens?source=terraform-login
+```
+
+### Terraform GUI issues
+
+This block of code is found in `main.tf`.  The `organization` value is found in the lower left hand corner of your Terraform Cloud GUI window.  Be sure to use the current workspace value.
+
+```
+terraform {
+  cloud {
+    organization = "terraform-beginner-bootcamp3"
+    workspaces {
+      name = "terra-house-3"
+    }
+  }
+``` 
+
