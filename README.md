@@ -240,15 +240,85 @@ eg. `terraform apply -destroy -auto-approve`
 
 The `.terraform` directory contains binaries of the Terraform providers.
 
+### Terraform Cloud and Gitpod Workspace
 
-### Issues with Terraform Cloud and Gitpod Workspace
+When attempting to run `terraform login`, it will launch a WYSIWYG view to generate an API token.  However, it doesn't work as expected in Gitpod VSCODE in the brower.
 
-When attempting to run `terraform login`, it will launch in the Gitpod Bash terminal a Lynx text Web browser view to generate an API token.  However, it doesn't work as expected in Gitpod VSCODE in the brower.  In Lynx, press the P key to print a related token URL.  Copy the link.  Open this link in a new Google Chrome browser tab.  Generate the API token set for an expiration date of a day.  Back in the Gitpod terminal, quit out of the `terraform login` screen.  Rerun this command and paste the API token when prompted to.  Run `terraform init`.  At this point, Terraform Cloud will ask if you want to migrate your Terraform state.  Answer 'yes' to this question.
-
-This is the URL needed to generate a Terraform API login token:
+The workaround is to manually generate an API token in Terraform Cloud:
 
 ```
 https://app.terraform.io/app/settings/tokens?source=terraform-login
+```
+
+In Terraform Cloud, goto User Settings, Tokens.
+Click on the `Create an API Token` icon.
+Set the duration of the token to 90 days.
+Copy the API token to the clipboard.
+
+In Gitpod, execute these commands:
+
+```
+gp env TERRAFORM_CLOUD_TOKEN='DUMMYAPITOKEN'
+export TERRAFORM_CLOUD_TOKEN='DUMMYAPITOKEN'
+```
+
+Be sure to put your own copied API token where it says `DUMMYAPITOKEN`.
+
+Then create the file manually here:
+
+```sh
+touch /home/gitpod/.terraform.d/credentials.tfrc.json
+open /home/gitpod/.terraform.d/credentials.tfrc.json
+```
+
+The second command string will open the JSON file that just got created.
+Provide the following code (replace your token in the file):
+
+```json
+{
+  "credentials": {
+    "app.terraform.io": {
+      "token": "$TERRAFORM_CLOUD_TOKEN"
+    }
+  }
+}
+```
+
+This Bash script will generate the Terraform API token in the correct directory.  This script gets executed in your Gitpod terminal.  The script gets saved at `./bin/generate_tfrc_credentials`:
+
+```
+#!/usr/bin/env bash
+
+# Check if the TERRAFORM_CLOUD_TOKEN environment variable is set
+if [ -z "$TERRAFORM_CLOUD_TOKEN" ]; then
+    echo "Error: TERRAFORM_CLOUD_TOKEN environment variable is not set."
+    exit 1
+fi
+  
+# Specify the destination directory
+credentials_dir="/home/gitpod/.terraform.d/"
+credentials_file="${credentials_dir}credentials.tfrc.json"
+  
+# JSON structure for credentials.tfrc.json
+json_structure=$(cat <<-END
+{
+  "credentials": {
+    "app.terraform.io": {
+      "token": "$TERRAFORM_CLOUD_TOKEN"
+    }
+  }
+}
+END
+)
+
+# Create the directory if it doesn't exist
+mkdir -p "$credentials_dir"
+
+# Write the JSON structure to credentials.tfrc.json
+echo "$json_structure" > "$credentials_file"
+
+echo "credentials.tfrc.json has been created at $credentials_file with the following content:"
+cat "$credentials_file"
 ```
 
 ### Terraform GUI issues
@@ -260,7 +330,7 @@ terraform {
   cloud {
     organization = "terraform-beginner-bootcamp3"
     workspaces {
-      name = "terra-house-3"
+      name = "workspace-name"
     }
   }
 ``` 
