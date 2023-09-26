@@ -1,6 +1,37 @@
 # Terraform Beginner Bootcamp 2023
 
-## Semantic Versioning :mage:
+## Table of Contents
+
+- [Semantic Versioning](#semantic-versioning)
+- [Install the Terraform CLI](#install-the-terraform-cli)
+- [Considerations with the Terraform CLI changes](#considerations-with-the-terraform-cli-changes)
+- [Considerations for Linux distributions](#considerations-for-linux-distributions)
+- [Refactoring into Bash Scripts](#refactoring-into-bash-scripts)
+- [Shebang Considerations](#shebang-considerations)
+- [Execution Considerations](#execution-considerations)
+- [Linux Permissions Considerations](#linux-permissions-considerations)
+- [Github Lifecycle (Before, Init, Command)](#github-lifecycle-before-init-command)
+- [Working With Environment Variables (Env Vars)](#working-with-environment-variables-env-vars)
+- [env command](#env-command)
+- [Setting and Unsetting Env Vars](#setting-and-unsetting-env-vars)
+- [Printing Env Vars](#printing-env-vars)
+- [Scoping of Env Vars](#scoping-of-env-vars)
+- [Persisting Env Vars in Gitpod](#persisting-env-vars-in-gitpod)
+- [AWS CLI Installation](#persisting-env-vars-in-gitpod)
+- [Terraform Basics](#terraform-basics)
+- [Terraform Registry](#terraform-registry)
+- [Terraform Console](#terraform-console)
+- [Terraform Init](#terraform-init)
+- [Terraform Plan](#terraform-plan)
+- [Terraform Apply](#terraform-apply)
+- [Terraform Lock Files](#terraform-lock-files)
+- [Terraform State Files](#terraform-state-files)
+- [Terraform Destroy](#terraform-destroy)
+- [Terraform Directory](#terraform-directory)
+- [Terraform Cloud and Gitpod Workspace](#terraform-cloud-and-gitpod-workspace)
+- [Terraform GUI issues](#terraform-gui-issues)
+
+## Semantic Versioning
 
 This project is going to utilize semantic versioning for its tagging.
 [semver.org](https://semver.org/)
@@ -208,7 +239,6 @@ We can output this changeset ie. "plan" to be passed to an apply, but often you 
 This will run a plan and pass the changeset to be executed by Terraform.  Apply should prompt for a 'yes' or 'no'.
 
 If we want to automatically approve an apply, we can provide the auto approve flag. eg. `terraform apply --auto-approve`
-
 
 ### Terraform Lock Files
 
