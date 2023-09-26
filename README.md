@@ -30,6 +30,7 @@
 - [Terraform Directory](#terraform-directory)
 - [Terraform Cloud and Gitpod Workspace](#terraform-cloud-and-gitpod-workspace)
 - [Terraform GUI issues](#terraform-gui-issues)
+- [Root Module Structure](#root-module-structure)
 
 ## Semantic Versioning
 
@@ -365,3 +366,19 @@ terraform {
   }
 ``` 
 
+## Root Module Structure
+
+Our root module structure is as follows:
+
+```
+PROJECT_ROOT
+|
+├── main.tf - Everything else is stored here
+├── variables.tf - Stores the structure of input variables
+├── terraform.tfvars - The data of variables we want to load into our Terraform project
+├── outputs.tf - Stores our output
+├── providers.tf - Defined required providers and their configuration
+└── README.md - required for root modules
+```
+
+[Standard Module Structure](https://developer.hashicorp.com/terraform/language/modules/develop/structure)
